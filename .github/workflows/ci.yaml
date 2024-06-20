@@ -22,6 +22,9 @@ jobs:
       - name: Run cocogitto-action
         id: release
         uses: ./cocogitto-action
+        with:
+          check: true
+          release: true
       - name: Check version
         run: |
           echo ${{ steps.release.outputs.version }}

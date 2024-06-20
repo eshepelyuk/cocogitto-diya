@@ -17,6 +17,9 @@ git config --global user.email "${GIT_USER_EMAIL}"
 
 cog --version
 
+LATEST_VERSION=$(cog get-version 2>/dev/null || echo '')
+echo $LATEST_VERSION
+
 if [ "${CHECK}" = "true" ]; then
   if [ "${LATEST_TAG_ONLY}" = "true" ]; then
     if [ "$(git describe --tags --abbrev=0)" ]; then

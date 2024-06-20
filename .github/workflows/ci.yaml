@@ -14,12 +14,14 @@ jobs:
       - name: Initialise repository
         run: |
           git init
-          echo './cocogitto-action/' > .gitignore
+          echo 'cocogitto-action/' > .gitignore
           echo '# Mona Lisa' > README.md
           git config --global user.name 'Mona Lisa'
           git config --global user.email 'mona.lisa@example.com'
           git add README.md .gitignore
           git commit -m 'feat: add Mona Lisa docs'
+          ls -la
+          git status
       - name: Run cocogitto-action
         id: release
         uses: ./cocogitto-action

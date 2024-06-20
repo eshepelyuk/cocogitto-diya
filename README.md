@@ -91,9 +91,13 @@ You can also use this action to perform releases (calling `cog bump --auto` unde
           git-user: 'Cog Bot'
           git-user-email: 'mycoolproject@org.org'
 
-      # The version number is accessible as a github action output
-      - name: Print version
-        run: "echo '${{ steps.release.outputs.version }}'"
+      # The version number is accessible as the action output.
+      # Also the action output contains flag,
+      # indicating if version was bumped or not.
+      - name: Print version if changed
+        if: ${{ steps.release.outputs.bumped }}
+        run: |
+          echo "new version: ${{ steps.release.outputs.version }}"
 ```
 
 Note that you probably want to set the `git-user` and `git-user-email` options to override the default the git signature for the release commit. 
@@ -110,8 +114,8 @@ Here are all the inputs available through `with`:
 
 | Input                   | Description                                                                | Default    |
 | -------------------     | -------------------------------------------------------------------------- | -------    |
-| `check`                 | Check conventional commit compliance with `cog check`                      |   `true`   |
-| `check-latest-tag-only` | Check conventional commit compliance with `cog check --from-latest-tag`    |   `false`  |
-| `release`               | Perform a release using `cog bump --auto`                                  |   `false`  |
-| `git-user`              | Set the git `user.name` to use for the release commit                      |   `cog-bot`|
-| `git-user-email`        | Set the git `user.email` to use for the release commit                      |  `cog@demo.org`|
+| `check`                 | Check conventional commit compliance with `cog check`                      | `true`   |
+| `check-latest-tag-only` | Check conventional commit compliance with `cog check --from-latest-tag`    | `false`  |
+| `release`               | Perform a release using `cog bump --auto`                                  | `false`  |
+| `git-user`              | Set the git `user.name` to use for the release commit                      | `cog-bot`|
+| `git-user-email`        | Set the git `user.email` to use for the release commit                     | `cog@demo.org`|

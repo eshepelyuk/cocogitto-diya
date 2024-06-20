@@ -17,10 +17,12 @@ git config --global user.email "${GIT_USER_EMAIL}"
 
 cog --version
 
-if [ "${CHECK}" = "true" ]; then
-  if [ "${LATEST_TAG_ONLY}" = "true" ]; then
-    if [ "$(git describe --tags --abbrev=0)" ]; then
-      message="Checking commits from $(git describe --tags --abbrev=0)"
+CURRENT_VERSION=$(cog get-version 2>/dev/null || echo '')
+
+if [ "${CHECK}" = 'true' ]; then
+  if [ "${LATEST_TAG_ONLY}" = 'true' ]; then
+    if [ -n "${CURRENT_VERSION}" ]; then
+      message="Checking commits from ${CURRENT_VERSION}"
     else
       message="No tag found checking history from first commit"
     fi
@@ -32,10 +34,15 @@ if [ "${CHECK}" = "true" ]; then
   fi
 fi
 
-if [ "${RELEASE}" = "true" ]; then
+if [ "${RELEASE}" = 'true' ]; then
   cog bump --auto || exit 1
-  VERSION="$(git describe --tags "$(git rev-list --tags --max-count=1)")"
-  echo "version=$VERSION" >> $GITHUB_OUTPUT
+  NEXT_VERSION=$(cog get-version 2>/dev/null || echo '')
+  # shellcheck disable=2086
+  echo "version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
+  if [ -n "${NEXT_VERSION}" ] && [ "${CURRENT_VERSION}" != "${NEXT_VERSION}" ]; then
+    # shellcheck disable=2086
+    echo 'bumped=true' >> $GITHUB_OUTPUT
+  fi
 fi
 
 if ( echo "${VERIFY}" | grep -Eiv '^([01]|(true)|(false))$' > /dev/null ) ; then

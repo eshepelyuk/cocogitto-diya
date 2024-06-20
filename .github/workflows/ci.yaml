@@ -20,14 +20,12 @@ jobs:
           git config --global user.email 'mona.lisa@example.com'
           git add README.md .gitignore
           git commit -m 'feat: add Mona Lisa docs'
-          ls -la
-          git status
       - name: Run cocogitto-action
         id: release
         uses: ./cocogitto-action
         with:
           check: true
           release: true
-      - name: Check version
+      - name: Check outputs
         run: |
-          echo ${{ steps.release.outputs.version }}
+          [ "${{ steps.release.outputs.version }}" == '0.1.0' ] || exit 1

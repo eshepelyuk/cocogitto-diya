@@ -5,7 +5,7 @@ on:
   push: {}
 
 jobs:
-  has-releasw:
+  has-release:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

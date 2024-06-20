@@ -5,6 +5,31 @@ on:
   push: {}
 
 jobs:
+  no-release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          path: cocogitto-action
+      - name: Initialise repository
+        run: |
+          git init
+          echo 'cocogitto-action/' > .gitignore
+          echo '# Mona Lisa' > README.md
+          git config --global user.name 'Mona Lisa'
+          git config --global user.email 'mona.lisa@example.com'
+          git add README.md .gitignore
+          git commit -m 'chore: add Mona Lisa docs'
+      - name: Run cocogitto-action
+        id: release
+        uses: ./cocogitto-action
+        with:
+          check: true
+          release: true
+      - name: Check outputs
+        run: |
+          [ -z "${{ steps.release.outputs.version }}" ] || exit 1
+          [ -z "${{ steps.release.outputs.nextVersion }}" ] || exit 1
   has-release:
     runs-on: ubuntu-latest
     steps:

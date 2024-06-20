@@ -29,3 +29,4 @@ jobs:
       - name: Check outputs
         run: |
           [ "${{ steps.release.outputs.version }}" == '0.1.0' ] || exit 1
+          [ "${{ steps.release.outputs.nextVersion }}" == '0.1.0' ] || exit 1

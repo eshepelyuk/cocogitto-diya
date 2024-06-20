@@ -5,9 +5,8 @@ on:
   push: {}
 
 jobs:
-  test:
+  has-releasw:
     runs-on: ubuntu-latest
-
     steps:
       - uses: actions/checkout@v4
         with:
@@ -19,6 +18,10 @@ jobs:
           git config --global user.name "Mona Lisa"
           git config --global user.email "mona.lisa@example.com"
           git add README.md
-          git commit -m "docs: add Mona Lisa docs"
+          git commit -m "feat: add Mona Lisa docs"
       - name: Run cocogitto-action
+        id: release
         uses: ./cocogitto-action
+      - name: Check version
+        run: |
+          echo ${{ steps.release.outputs.version }}

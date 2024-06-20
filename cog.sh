@@ -37,9 +37,10 @@ fi
 
 if [ "${RELEASE}" = "true" ]; then
   cog bump --auto || exit 1
-  NEW_VERSION=$(cog get-version 2>/dev/null || echo '')
-  if [ -n "${NEW_VERSION}" ]; then 
-    echo "version=${NEW_VERSION}" >> $GITHUB_OUTPUT
+  NEXT_VERSION=$(cog get-version 2>/dev/null || echo '')
+  echo "version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
+  if [ -n "${NEXT_VERSION}" ] && [ "${OLD_VERSION}" != "${NEXT_VERSION}" ]; then 
+    echo "nextVersion=${NEXT_VERSION}" >> $GITHUB_OUTPUT
   fi
 fi
 

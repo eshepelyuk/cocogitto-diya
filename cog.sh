@@ -17,13 +17,13 @@ git config --global user.email "${GIT_USER_EMAIL}"
 
 cog --version
 
-LATEST_VERSION=$(cog get-version 2>/dev/null || echo '')
+OLD_VERSION=$(cog get-version 2>/dev/null || echo '')
 echo "LATEST=${LATEST_VERSION}"
 
 if [ "${CHECK}" = "true" ]; then
   if [ "${LATEST_TAG_ONLY}" = "true" ]; then
-    if [ -n "${LATEST_VERSION}" ]; then
-      message="Checking commits from ${LATEST_VERSION}"
+    if [ -n "${OLD_VERSION}" ]; then
+      message="Checking commits from ${OLD_VERSION}"
     else
       message="No tag found checking history from first commit"
     fi
@@ -37,8 +37,10 @@ fi
 
 if [ "${RELEASE}" = "true" ]; then
   cog bump --auto || exit 1
-  VERSION="$(git describe --tags "$(git rev-list --tags --max-count=1)")"
-  echo "version=$VERSION" >> $GITHUB_OUTPUT
+  NEW_VERSION=$(cog get-version 2>/dev/null || echo '')
+  if [ -n "${NEW_VERSION}" ]; then 
+  	echo "version=${NEW_VERSION}" >> $GITHUB_OUTPUT
+  fi
 fi
 
 if ( echo "${VERIFY}" | grep -Eiv '^([01]|(true)|(false))$' > /dev/null ) ; then

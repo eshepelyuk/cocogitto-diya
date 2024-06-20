@@ -39,7 +39,7 @@ if [ "${RELEASE}" = "true" ]; then
   cog bump --auto || exit 1
   NEW_VERSION=$(cog get-version 2>/dev/null || echo '')
   if [ -n "${NEW_VERSION}" ]; then 
-  	echo "version=${NEW_VERSION}" >> $GITHUB_OUTPUT
+    echo "version=${NEW_VERSION}" >> $GITHUB_OUTPUT
   fi
 fi
 

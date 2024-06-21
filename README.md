@@ -92,9 +92,10 @@ You can also use this action to perform releases (calling `cog bump --auto` unde
           git-user-email: 'mycoolproject@org.org'
 
       # The version number is accessible as the action output.
-      # Also the action output contains flag, indicating if version was bumped or not.
+      # Also the action output contains flag,
+      # indicating if version was bumped or not.
       - name: Print version if changed
-        if: ${{ steps.release.outputs.bumped == 'true' }}
+        if: ${{ steps.release.outputs.bumped }}
         run: |
           echo "new version: ${{ steps.release.outputs.version }}"
 ```

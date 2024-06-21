@@ -40,8 +40,6 @@ if [ "${RELEASE}" = 'true' ]; then
   echo "version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
   if [ -n "${NEXT_VERSION}" ] && [ "${CURRENT_VERSION}" != "${NEXT_VERSION}" ]; then 
     echo 'bumped=true' >> $GITHUB_OUTPUT
-  else
-    echo 'bumped=false' >> $GITHUB_OUTPUT
   fi
 fi
 

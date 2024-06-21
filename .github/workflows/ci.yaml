@@ -31,7 +31,7 @@ jobs:
       - name: Check outputs
         run: |
           [ "${{ steps.release.outputs.version }}" == '0.1.0' ] || exit 1
-          [ "${{ steps.release.outputs.bumped }}" == 'false' ] || exit 1
+          [ -z "${{ steps.release.outputs.bumped }}" ] || exit 1
   no-bump-no-prev:
     runs-on: ubuntu-latest
     steps:
@@ -56,7 +56,7 @@ jobs:
       - name: Check outputs
         run: |
           [ -z "${{ steps.release.outputs.version }}" ] || exit 1
-          [ "${{ steps.release.outputs.bumped }}" == 'false' ] || exit 1
+          [ -z "${{ steps.release.outputs.bumped }}" ] || exit 1
   bump-no-prev:
     runs-on: ubuntu-latest
     steps:

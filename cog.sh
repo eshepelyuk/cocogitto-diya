@@ -19,8 +19,8 @@ cog --version
 
 CURRENT_VERSION=$(cog get-version 2>/dev/null || echo '')
 
-if [ "${CHECK}" == 'true' ]; then
-  if [ "${LATEST_TAG_ONLY}" == 'true' ]; then
+if [ "${CHECK}" = 'true' ]; then
+  if [ "${LATEST_TAG_ONLY}" = 'true' ]; then
     if [ -n "${CURRENT_VERSION}" ]; then
       message="Checking commits from ${CURRENT_VERSION}"
     else
@@ -34,7 +34,7 @@ if [ "${CHECK}" == 'true' ]; then
   fi
 fi
 
-if [ "${RELEASE}" == 'true' ]; then
+if [ "${RELEASE}" = 'true' ]; then
   cog bump --auto || exit 1
   NEXT_VERSION=$(cog get-version 2>/dev/null || echo '')
   echo "version=${NEXT_VERSION}" >> $GITHUB_OUTPUT

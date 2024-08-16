@@ -1,4 +1,10 @@
-# Cocogitto github action
+# Cocogitto github action (дія)
+
+> [!NOTE]  
+> This is a fork of original [Cocogitto github action](https://github.com/cocogitto/cocogitto-action).
+> Created to speed up development of new features.
+>
+> `diya` (дія) is a literal translation of word `action` into Ukrainian language. 
 
 This action uses [cocogitto](https://github.com/cocogitto/cocogitto) to check 
 your repository is [conventional commit](https://conventionalcommits.org/) and perform auto-release.
@@ -94,7 +100,7 @@ You can also use this action to perform releases (calling `cog bump --auto` unde
           git-user-email: 'mycoolproject@org.org'
 
       # The version number is accessible as the action output.
-      # Also the action output contains flag,
+      # Also the action output contains flag, named bumped
       # indicating if version was bumped or not.
       - name: Print version if changed
         if: ${{ steps.release.outputs.bumped }}

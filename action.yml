@@ -1,5 +1,5 @@
 ---
-name: Conventional commit cocogitto action
+name: Cocogitto action diya
 
 description: |
   Check conventional commits compliance and/or automatically release new version

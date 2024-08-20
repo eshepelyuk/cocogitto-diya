@@ -1,5 +1,5 @@
 ---
-name: Cocogitto action diya
+name: Cocogitto diya - github action
 
 description: |
   Check conventional commits compliance and/or automatically release new version
@@ -15,6 +15,11 @@ inputs:
     description: Perform a release with cog bump --auto
     required: false
     default: 'false'
+  release-initial-version:
+    description: |
+      Enforce this version if there's no previous releases
+      with cog bump --version <release-initial-version>
+    required: false
   check:
     description: Perform a conventional commit check with cog --check
     required: false
@@ -65,10 +70,11 @@ runs:
     - id: cog
       shell: bash
       run: |
-        ${{ github.action_path }}/cog.sh    \
-        ${{ inputs.check }}                 \
-        ${{ inputs.check-latest-tag-only }} \
-        ${{ inputs.release }}               \
-        ${{ inputs.git-user }}              \
-        ${{ inputs.git-user-email }}        \
-        ${{ inputs.working-directory }}
+        ${{ github.action_path }}/cog.sh        \
+        ${{ inputs.check }}                     \
+        ${{ inputs.check-latest-tag-only }}     \
+        ${{ inputs.release }}                   \
+        ${{ inputs.git-user }}                  \
+        ${{ inputs.git-user-email }}            \
+        ${{ inputs.working-directory }}         \
+        ${{ inputs.release-initial-version }}

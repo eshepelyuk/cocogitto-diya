@@ -31,7 +31,7 @@ jobs:
           fetch-depth: 0
 
       - name: Conventional commit check
-        uses: cocogitto/cocogitto-action@v3
+        uses: eshepelyuk/cocogitto-diya@main
 ```
 
 If you are running your workflow `on: [pull_request]`,
@@ -52,7 +52,7 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Conventional commit check
-        uses: cocogitto/cocogitto-action@v3
+        uses: eshepelyuk/cocogitto-diya@main
 ```
 
 If you are familiar with cocogitto this will run `cog check` and nothing else.
@@ -65,7 +65,7 @@ then you probably want to use this option.
 
 ```yaml
       - name: Conventional commit check
-        uses: cocogitto/cocogitto-action@v3
+        uses: eshepelyuk/cocogitto-diya@main
         with:
           check-latest-tag-only: true
 ```
@@ -92,7 +92,7 @@ You can also use this action to perform releases (calling `cog bump --auto` unde
 
 ```yaml
       - name: Semver release
-        uses: cocogitto/cocogitto-action@v3
+        uses: eshepelyuk/cocogitto-diya@main
         id: release
         with:
           release: true
@@ -120,10 +120,11 @@ Once the step is finished cocogitto's binary will be available in your path.
 
 Here are all the inputs available through `with`:
 
-| Input                   | Description                                                                | Default    |
-| -------------------     | -------------------------------------------------------------------------- | -------    |
-| `check`                 | Check conventional commit compliance with `cog check`                      | `true`   |
-| `check-latest-tag-only` | Check conventional commit compliance with `cog check --from-latest-tag`    | `false`  |
-| `release`               | Perform a release using `cog bump --auto`                                  | `false`  |
-| `git-user`              | Set the git `user.name` to use for the release commit                      | `cog-bot`|
-| `git-user-email`        | Set the git `user.email` to use for the release commit                     | `cog@demo.org`|
+| Input                   | Description                                                                | Default            |
+| -------------------     | -------------------------------------------------------------------------- | ------------------ |
+| `check`                 | Check conventional commit compliance with `cog check`.                     | `true`             |
+| `check-latest-tag-only` | Check conventional commit compliance with `cog check --from-latest-tag`.   | `false`            |
+| `release`               | Perform a release using `cog bump --auto`.                                 | `false`            |
+| `git-user`              | Set the git `user.name` to use for the release commit.                     | `cog-bot`          |
+| `git-user-email`        | Set the git `user.email` to use for the release commit.                    | `cog@demo.org`     |
+| `working-directory`     | Set working directory.                                                     | `.`                |

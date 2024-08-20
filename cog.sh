@@ -12,30 +12,30 @@ INITIAL_VERSION="${7}"
 
 # shellcheck disable=2164
 cd "${WORK_DIR}"
-echo "Working directory: ${WORK_DIR}, current directory: ${PWD}"
+echo "[cog-action] working directory: ${WORK_DIR}, current directory: ${PWD}"
 
-echo "Setting git user : ${GIT_USER}"
+echo "[cog-action] setting git user : ${GIT_USER}"
 git config --global user.name "${GIT_USER}"
 
-echo "Settings git user email ${GIT_USER_EMAIL}"
+echo "[cog-action] setting git user email ${GIT_USER_EMAIL}"
 git config --global user.email "${GIT_USER_EMAIL}"
 
 cog --version
 
 CURRENT_VERSION=$(cog get-version 2>/dev/null || echo '')
-echo "Current version: ${CURRENT_VERSION}, initial version: ${INITIAL_VERSION}"
+echo "[cog-action] current version: ${CURRENT_VERSION}, initial version: ${INITIAL_VERSION}"
 
 if [ "${CHECK}" = 'true' ]; then
   if [ "${LATEST_TAG_ONLY}" = 'true' ]; then
     if [ -n "${CURRENT_VERSION}" ]; then
-      echo "Checking commits from ${CURRENT_VERSION}"
+      echo "[cog-action] checking commits from ${CURRENT_VERSION}"
       cog check --from-latest-tag || exit 1
     else
-      echo 'No tag found checking history from first commit'
+      echo '[cog-action] no tag found, checking from first commit'
       cog check || exit 1
     fi
   else
-    echo "Checking all commits"
+    echo "[cog-action] checking all commits"
     cog check || exit 1
   fi
 fi
@@ -49,14 +49,10 @@ if [ "${RELEASE}" = 'true' ]; then
   fi
 
   NEXT_VERSION=$(cog get-version 2>/dev/null || echo '')
-  echo "Next version: ${NEXT_VERSION}, current version: ${CURRENT_VERSION}"
+  echo "[cog-action] next version: ${NEXT_VERSION}, current version: ${CURRENT_VERSION}"
 
-  # shellcheck disable=2086
-  echo "version=${NEXT_VERSION}" >> $GITHUB_OUTPUT
+  echo "version=${NEXT_VERSION}" >> "${GITHUB_OUTPUT}"
   if [ -n "${NEXT_VERSION}" ] && [ "${CURRENT_VERSION}" != "${NEXT_VERSION}" ]; then
-    # shellcheck disable=2086
-    echo 'bumped=true' >> $GITHUB_OUTPUT
-  else
-    echo "No bumped"
+    echo 'bumped=true' >> "${GITHUB_OUTPUT}"
   fi
 fi

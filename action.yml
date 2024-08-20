@@ -20,6 +20,7 @@ inputs:
       Enforce this version if there's no previous releases
       with cog bump --version <release-initial-version>
     required: false
+    default: ""
   check:
     description: Perform a conventional commit check with cog --check
     required: false

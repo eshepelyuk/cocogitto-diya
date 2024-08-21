@@ -59,6 +59,4 @@ if [ "${RELEASE}" = 'true' ]; then
   CHNG="RELEASE_NOTES_${NEXT_VERSION}.md"
   cog changelog --at "${NEXT_VERSION}" > "${CHNG}"
   echo "changelog=${CHNG}" >> "${GITHUB_OUTPUT}"
-
-  cat ${CHNG}
 fi

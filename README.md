@@ -9,14 +9,17 @@
 This action uses [cocogitto](https://github.com/cocogitto/cocogitto) to check 
 your repository is [conventional commit](https://conventionalcommits.org/) and perform auto-release.
 
+Once the action's step is finished `cocogitto` binary will be available in `PATH`.
+
 ## Requirement
 
-1. Before running this action you need to call checkout action with `fetch-depth: 0`. This is mandatory, otherwise not all commit 
-will be fetched and cocogitto will fail to execute (see [actions/checkout](https://github.com/actions/checkout#checkout-v4) for more info).
+1. Before running this action you need to call checkout action with `fetch-depth: 0`.
+This is mandatory, otherwise not all commit 
+will be fetched and cocogitto will fail to execute
+(see [actions/checkout](https://github.com/actions/checkout#checkout-v4) for more info).
+1. Cocogitto assumes you are running on a x86 linux runner.
 
-2. Cocogitto assumes you are running on a x86 linux runner.
-
-## Example 
+## Checking commits
 
 ```yaml
 on: [push]
@@ -31,7 +34,7 @@ jobs:
           fetch-depth: 0
 
       - name: Conventional commit check
-        uses: eshepelyuk/cocogitto-diya@main
+        uses: eshepelyuk/cocogitto-diya@v1
 ```
 
 If you are running your workflow `on: [pull_request]`,
@@ -52,22 +55,22 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
 
       - name: Conventional commit check
-        uses: eshepelyuk/cocogitto-diya@main
+        uses: eshepelyuk/cocogitto-diya@v1
 ```
 
 If you are familiar with cocogitto this will run `cog check` and nothing else.
 
-## Check commits since latest tag 
+### Check commits since latest tag 
 
 In some case you might want to perform check only since the latest tagged version.
 If your repository has not always been conventional commits compliant,
 then you probably want to use this option. 
 
 ```yaml
-      - name: Conventional commit check
-        uses: eshepelyuk/cocogitto-diya@main
-        with:
-          check-latest-tag-only: true
+- name: Conventional commit check
+  uses: eshepelyuk/cocogitto-diya@v1
+  with:
+    check-latest-tag-only: true
 ```
 
 Let us assume the following git history : 
@@ -90,33 +93,34 @@ In case there's no existing tags, the action will fall back to `cog check`.
 You can also use this action to perform releases (calling `cog bump --auto` under the hood) 
 (see: [cocogitto's auto bump](https://github.com/cocogitto/cocogitto#auto-bump)).
 
-```yaml
-      - name: Semver release
-        uses: eshepelyuk/cocogitto-diya@main
-        id: release
-        with:
-          release: true
-          git-user: 'Cog Bot'
-          git-user-email: 'mycoolproject@org.org'
+Action generates release changelog file, putting file name into step's output.
 
-      # The version number is accessible as the action output.
-      # Also the action output contains flag, named bumped
-      # indicating if version was bumped or not.
-      - name: Print version if changed
-        if: ${{ steps.release.outputs.bumped }}
-        run: |
-          echo "new version: ${{ steps.release.outputs.version }}"
+```yaml
+- name: Semver release
+  uses: eshepelyuk/cocogitto-diya@v1
+  id: release
+  with:
+    release: true
+    git-user: 'Cog Bot'
+    git-user-email: 'mycoolproject@org.org'
+
+  # The version number is accessible as the step's output.
+  # Also output contains `bumped` flag, indicating if version was bumped or not.
+- name: Publish GitHub release, if version changed
+  if: ${{ steps.release.outputs.bumped }}
+  uses: softprops/action-gh-release@v2
+  with:
+    body_path: ${{ steps.release.outputs.changelog }}
+    tag_name: ${{ steps.release.outputs.version }}
 ```
 
-Note that you probably want to set the `git-user` and `git-user-email` options to override the default the git signature for the release commit. 
-If you are not familiar with how cocogitto perform release, you might want to read the [auto bump](https://github.com/cocogitto/cocogitto#auto-bump)
+Note that you probably want to set the `git-user` and `git-user-email` options 
+to override the default the git signature for the release commit. 
+If you are not familiar with how cocogitto perform release,
+you might want to read the [auto bump](https://github.com/cocogitto/cocogitto#auto-bump)
 and [hook](https://github.com/cocogitto/cocogitto#auto-bump) sections on cocogitto's documentation.
 
-## Post step run
-
-Once the step is finished cocogitto's binary will be available in your path.
-
-##  Reference 
+## Inputs reference 
 
 Here are all the inputs available through `with`:
 

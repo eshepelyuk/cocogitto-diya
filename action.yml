@@ -49,6 +49,9 @@ outputs:
   bumped:
     description: Indicates if the version was bumped.
     value: ${{ steps.cog.outputs.bumped }}
+  changelog:
+    description: Path to changelog file, if release was performed.
+    value: ${{ steps.cog.outputs.changelog }}
 
 runs:
   using: composite

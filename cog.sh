@@ -55,4 +55,10 @@ if [ "${RELEASE}" = 'true' ]; then
   if [ -n "${NEXT_VERSION}" ] && [ "${CURRENT_VERSION}" != "${NEXT_VERSION}" ]; then
     echo 'bumped=true' >> "${GITHUB_OUTPUT}"
   fi
+
+  CHNG="RELEASE_NOTES_${NEXT_VERSION}.md"
+  cog changelog --at "${NEXT_VERSION}" > "${CHNG}"
+  echo "changelog=${CHNG}" >> "${GITHUB_OUTPUT}"
+
+  cat ${CHNG}
 fi
